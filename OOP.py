@@ -25,6 +25,24 @@ class Student:
         res = round(sum_ / len_, 2)
         return res
 
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print("Разные категории людей не сравниваем.")
+            return
+        return self.st_avg_rate() < other.st_avg_rate()
+
+    def __gt__(self, other):
+        if not isinstance(other, Student):
+            print("Разные категории людей не сравниваем.")
+            return
+        return self.st_avg_rate() > other.st_avg_rate()
+
+    def __eq__(self, other):
+        if not isinstance(other, Student):
+            print("Разные категории людей не сравниваем.")
+            return
+        return self.st_avg_rate() == other.st_avg_rate()
+
     def __str__(self):
         return f' Имя: {self.name} \n ' \
                f'Фамилия: {self.surname} \n ' \
@@ -32,11 +50,6 @@ class Student:
                f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)} \n ' \
                f'Завершенные курсы: {", ".join(self.finished_courses)}'
 
-    def __lt__(self, other):
-        if not isinstance(other, Student):
-            print("Разные категории людей не сравниваем.")
-            return
-        return self.st_avg_rate() < other.st_avg_rate()
 
 class Mentor:
     def __init__(self, name, surname):
@@ -110,21 +123,20 @@ cool_lecturer_1 = Lecturer('Some', 'Buddy')
 cool_lecturer_1.courses_attached += ['Python', 'C+']
 cool_lecturer_2 = Lecturer('Mr', 'Voice')
 cool_lecturer_2.courses_attached += ['Git', 'C+']
-cool_lecturer_3 = Lecturer('Ms', 'Heart')
-cool_lecturer_3.courses_attached += ['Git', 'C+']
+
 
 best_student_1.lecturer_grade(cool_lecturer_1, 'Python', 8)
 best_student_1.lecturer_grade(cool_lecturer_1, 'Python', 7)
 best_student_1.lecturer_grade(cool_lecturer_1, 'Python', 10)
-
-if best_student_1 < best_student_2:
-    print(best_student_1.name, ' has less rate than', best_student_2.name)
-else:
-    print(best_student_1.name, ' has the same or higher rate than', best_student_2.name)
-
 
 print(best_student_1.grades)
 print(cool_lecturer_1.grades)
 print(cool_lecturer_1)
 print(best_student_1)
 
+if best_student_1 < best_student_2:
+    print(best_student_1.name, ' has less rate than', best_student_2.name)
+elif best_student_1 > best_student_2:
+    print(best_student_1.name, ' has higher rate than', best_student_2.name)
+else:
+    print(best_student_1.name, ' has the same rate as', best_student_2.name)
