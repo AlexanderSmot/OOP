@@ -16,7 +16,27 @@ class Student:
         else:
             return 'Ошибка'
 
-        # sum(self.grades.values(), [])
+    def st_avg_rate(self):
+        sum_ = 0
+        len_ = 0
+        for mark in self.grades.values():
+            sum_ += sum(mark)
+            len_ += len(mark)
+        res = round(sum_ / len_, 2)
+        return res
+
+    def __str__(self):
+        return f' Имя: {self.name} \n ' \
+               f'Фамилия: {self.surname} \n ' \
+               f'Средняя оценка за домашние задания: {self.st_avg_rate()} \n ' \
+               f'Курсы в процессе изучения: {", ".join(self.courses_in_progress)} \n ' \
+               f'Завершенные курсы: {", ".join(self.finished_courses)}'
+
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print("Разные категории людей не сравниваем.")
+            return
+        return self.st_avg_rate() < other.st_avg_rate()
 
 class Mentor:
     def __init__(self, name, surname):
@@ -39,6 +59,11 @@ class Lecturer(Mentor):
     def __str__(self):
         return f' Имя: {self.name} \n Фамилия: {self.surname} \n Средняя оценка за лекции: {self.avg_rate()}'
 
+    def __lt__(self, other):
+        if not isinstance(other, Student):
+            print("Разные категории людей не сравниваем.")
+            return
+        return self.st_avg_rate() < other.st_avg_rate()
 
 class Reviewer(Mentor):
 
@@ -55,27 +80,51 @@ class Reviewer(Mentor):
         return f' Имя: {self.name} \n Фамилия: {self.surname}'
 
 
-best_student = Student('Ruoy', 'Eman', 'your_gender')
-best_student.courses_in_progress += ['Python']
+best_student_1 = Student('Ruoy', 'Eman', 'your_gender')
+best_student_1.courses_in_progress += ['Python', 'Git']
+best_student_1.finished_courses += ['Введение в программирование']
 
-cool_reviewer = Reviewer('Some', 'Buddy')
-cool_reviewer.courses_attached += ['Python']
+best_student_2 = Student('Maks', 'Min', 'your_gender')
+best_student_2.courses_in_progress += ['C++', 'Git']
+best_student_2.finished_courses += ['Введение в программирование']
 
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
-cool_reviewer.rate_hw(best_student, 'Python', 10)
+cool_reviewer_1 = Reviewer('Some', 'Buddy')
+cool_reviewer_1.courses_attached += ['Python']
+
+cool_reviewer_2 = Reviewer('Who', 'Nobody')
+cool_reviewer_2.courses_attached += ['Python']
+
+cool_reviewer_1.rate_hw(best_student_1, 'Python', 7)
+cool_reviewer_1.rate_hw(best_student_1, 'Python', 10)
+cool_reviewer_1.rate_hw(best_student_1, 'Python', 10)
+
+cool_reviewer_2.rate_hw(best_student_2, 'Python', 8)
+cool_reviewer_2.rate_hw(best_student_2, 'Python', 7)
+cool_reviewer_2.rate_hw(best_student_2, 'Python', 6)
+
 
 some_reviewer = Reviewer('Some', 'Buddy')
 print(some_reviewer)
 
+cool_lecturer_1 = Lecturer('Some', 'Buddy')
+cool_lecturer_1.courses_attached += ['Python', 'C+']
+cool_lecturer_2 = Lecturer('Mr', 'Voice')
+cool_lecturer_2.courses_attached += ['Git', 'C+']
+cool_lecturer_3 = Lecturer('Ms', 'Heart')
+cool_lecturer_3.courses_attached += ['Git', 'C+']
 
-cool_lecturer = Lecturer('Some', 'Buddy')
-cool_lecturer.courses_attached += ['Python', 'C+']
-print(cool_lecturer)
+best_student_1.lecturer_grade(cool_lecturer_1, 'Python', 8)
+best_student_1.lecturer_grade(cool_lecturer_1, 'Python', 7)
+best_student_1.lecturer_grade(cool_lecturer_1, 'Python', 10)
 
-best_student.lecturer_grade(cool_lecturer, 'Python', 8)
-best_student.lecturer_grade(cool_lecturer, 'Python', 7)
-best_student.lecturer_grade(cool_lecturer, 'Python', 9)
+if best_student_1 < best_student_2:
+    print(best_student_1.name, ' has less rate than', best_student_2.name)
+else:
+    print(best_student_1.name, ' has the same or higher rate than', best_student_2.name)
 
-print(best_student.grades)
-print(cool_lecturer.grades)
+
+print(best_student_1.grades)
+print(cool_lecturer_1.grades)
+print(cool_lecturer_1)
+print(best_student_1)
+
